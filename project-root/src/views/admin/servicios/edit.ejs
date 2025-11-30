@@ -1,0 +1,12 @@
+<!-- src/views/admin/servicios/edit.ejs -->
+<h1>Editar servicio</h1>
+<form action="/admin/servicios/<%= data.id_servicio %>/edit" method="post">
+  <label>Nombre</label>
+  <input type="text" name="nombre" value="<%= data.nombre %>" required>
+  <label>Descripción</label>
+  <textarea name="descripcion" required><%= data.descripcion %></textarea>
+  <label>Precio</label>
+  <input type="number" name="precio" value="<%= data.precio %>" step="0.01" required>
+  <button type="submit">Actualizar</button>
+  <a href="/admin/servicios" class="btn">Cancelar</a>
+</form>

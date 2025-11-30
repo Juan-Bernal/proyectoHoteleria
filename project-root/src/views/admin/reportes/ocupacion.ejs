@@ -1,0 +1,191 @@
+<!-- src/views/admin/reportes/ocupacion.ejs -->
+<h1>Reporte de Ocupación de Hotel</h1>
+<p class="descripcion">Calcula el porcentaje de ocupación de un hotel en un rango de fechas (usando función de base de datos).</p>
+
+<form method="GET" class="filtro-form">
+  <div class="form-group">
+    <label>Hotel:</label>
+    <select name="id_hotel" required>
+      <option value="">-- Seleccione un hotel --</option>
+      <% if (typeof hoteles !== 'undefined') { %>
+        <% hoteles.forEach(h => { %>
+          <option value="<%= h.id_hotel %>" <%= typeof filtros !== 'undefined' && filtros.id_hotel == h.id_hotel ? 'selected' : '' %>>
+            <%= h.nombre %>
+          </option>
+        <% }) %>
+      <% } %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Fecha Inicio:</label>
+    <input type="date" name="fecha_inicio" value="<%= typeof filtros !== 'undefined' ? filtros.fecha_inicio || '' : '' %>" required>
+  </div>
+  <div class="form-group">
+    <label>Fecha Fin:</label>
+    <input type="date" name="fecha_fin" value="<%= typeof filtros !== 'undefined' ? filtros.fecha_fin || '' : '' %>" required>
+  </div>
+  <button type="submit" class="btn">Calcular Ocupación</button>
+  <a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+</form>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Resultados de Ocupación</h3>
+  
+  <div class="resumen-ocupacion">
+    <div class="stat-box">
+      <h4>Promedio de Ocupación</h4>
+      <p class="stat-number">
+        <%= (data.reduce((sum, d) => sum + parseFloat(d.porcentaje_ocupacion), 0) / data.length).toFixed(1) %>%
+      </p>
+    </div>
+    <div class="stat-box">
+      <h4>Días Analizados</h4>
+      <p class="stat-number"><%= data.length %></p>
+    </div>
+    <div class="stat-box">
+      <h4>Ocupación Máxima</h4>
+      <p class="stat-number">
+        <%= Math.max(...data.map(d => parseFloat(d.porcentaje_ocupacion))).toFixed(1) %>%
+      </p>
+    </div>
+    <div class="stat-box">
+      <h4>Ocupación Mínima</h4>
+      <p class="stat-number">
+        <%= Math.min(...data.map(d => parseFloat(d.porcentaje_ocupacion))).toFixed(1) %>%
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Habitaciones Totales</th>
+        <th>Habitaciones Ocupadas</th>
+        <th>Porcentaje de Ocupación</th>
+        <th>Visualización</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(d => { 
+        const porcentaje = parseFloat(d.porcentaje_ocupacion);
+        let colorClass = 'baja';
+        if (porcentaje >= 80) colorClass = 'alta';
+        else if (porcentaje >= 50) colorClass = 'media';
+      %>
+        <tr>
+          <td><%= new Date(d.fecha).toLocaleDateString() %></td>
+          <td><%= d.habitaciones_totales %></td>
+          <td><%= d.habitaciones_ocupadas %></td>
+          <td class="ocupacion-<%= colorClass %>">
+            <strong><%= porcentaje.toFixed(1) %>%</strong>
+          </td>
+          <td>
+            <div class="barra-ocupacion">
+              <div class="barra-fill <%= colorClass %>" style="width: <%= porcentaje %>%">
+                <%= porcentaje > 10 ? porcentaje.toFixed(0) + '%' : '' %>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div class="leyenda">
+    <h4>Leyenda:</h4>
+    <div class="leyenda-items">
+      <div class="leyenda-item">
+        <span class="color-box baja"></span>
+        <span>Baja (&lt; 50%)</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="color-box media"></span>
+        <span>Media (50% - 79%)</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="color-box alta"></span>
+        <span>Alta (≥ 80%)</span>
+      </div>
+    </div>
+  </div>
+<% } else if (typeof filtros !== 'undefined' && filtros.id_hotel) { %>
+  <p class="no-resultados">No hay datos de ocupación para el período seleccionado.</p>
+<% } %>
+
+<style>
+.resumen-ocupacion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+.stat-box {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-box h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+  font-size: 0.9em;
+}
+.stat-number {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+.ocupacion-baja { color: #dc3545; }
+.ocupacion-media { color: #ffc107; }
+.ocupacion-alta { color: #28a745; }
+.barra-ocupacion {
+  width: 100%;
+  height: 30px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.barra-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85em;
+  transition: width 0.3s;
+}
+.barra-fill.baja { background: #dc3545; }
+.barra-fill.media { background: #ffc107; color: #333; }
+.barra-fill.alta { background: #28a745; }
+.leyenda {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+.leyenda h4 {
+  margin: 0 0 15px 0;
+}
+.leyenda-items {
+  display: flex;
+  gap: 30px;
+}
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.color-box {
+  width: 30px;
+  height: 20px;
+  border-radius: 4px;
+}
+.color-box.baja { background: #dc3545; }
+.color-box.media { background: #ffc107; }
+.color-box.alta { background: #28a745; }
+</style>

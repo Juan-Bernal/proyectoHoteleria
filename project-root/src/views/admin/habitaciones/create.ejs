@@ -1,0 +1,26 @@
+<!-- src/views/admin/habitaciones/create.ejs -->
+<h1>Crear Habitación</h1>
+<form action="/admin/habitaciones/create" method="post">
+  <label>Hotel</label>
+  <select name="id_hotel" required>
+    <% hoteles.forEach(h => { %>
+      <option value="<%= h.id_hotel %>"><%= h.nombre %></option>
+    <% }) %>
+  </select>
+
+  <label>Tipo de Habitación</label>
+  <select name="id_tipo_habitacion" required>
+    <% tipos.forEach(t => { %>
+      <option value="<%= t.id_tipo_habitacion %>"><%= t.nombre %></option>
+    <% }) %>
+  </select>
+
+  <label>Número</label>
+  <input type="text" name="numero_habitacion" required>
+
+  <label>Piso</label>
+  <input type="number" name="nro_piso" required>
+
+  <button type="submit">Guardar</button>
+  <a href="/admin/habitaciones" class="btn">Cancelar</a>
+</form>

@@ -1,0 +1,110 @@
+<!-- src/views/empleado/checkin/process.ejs -->
+<h1>Procesar Check-in</h1>
+
+<div class="info-reserva">
+  <h3>Reserva #<%= data.reserva.id_reserva %></h3>
+  <p><strong>Huésped:</strong> <%= data.reserva.nombre_huesped %> (<%= data.reserva.cedula %>)</p>
+  <p><strong>Hotel:</strong> <%= data.reserva.nombre_hotel %></p>
+  <p><strong>Fechas:</strong> <%= new Date(data.reserva.fecha_inicio).toLocaleDateString() %> - <%= new Date(data.reserva.fecha_fin).toLocaleDateString() %></p>
+  <p><strong>Total Reserva:</strong> $<%= data.reserva.valor_total %></p>
+</div>
+
+<form action="/empleado/checkin/procesar" method="POST">
+  <input type="hidden" name="id_reserva" value="<%= data.reserva.id_reserva %>">
+  <input type="hidden" name="id_huesped_responsable" value="<%= data.reserva.id_huesped_responsable %>">
+  <input type="hidden" name="fecha_inicio" value="<%= new Date(data.reserva.fecha_inicio).toISOString().split('T')[0] %>">
+  <input type="hidden" name="fecha_fin" value="<%= new Date(data.reserva.fecha_fin).toISOString().split('T')[0] %>">
+
+  <div class="section">
+    <h3>1. Validar Pago</h3>
+    <p>Se requiere un anticipo mínimo del 20% ($<%= (data.reserva.valor_total * 0.2).toFixed(2) %>).</p>
+    <div class="row">
+      <div class="col">
+        <label>Monto a Pagar Ahora</label>
+        <input type="number" name="monto_pago" step="0.01" value="<%= (data.reserva.valor_total * 0.2).toFixed(2) %>" required>
+      </div>
+      <div class="col">
+        <label>Método de Pago</label>
+        <select name="metodo_pago">
+          <option value="EFECTIVO">Efectivo</option>
+          <option value="TARJETA">Tarjeta de Crédito/Débito</option>
+          <option value="TRANSFERENCIA">Transferencia</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>2. Asignar Habitaciones</h3>
+    <p>Seleccione las habitaciones para esta reserva.</p>
+    <% if (data.habitacionesDisponibles && data.habitacionesDisponibles.length > 0) { %>
+      <div class="habitaciones-grid">
+        <% data.habitacionesDisponibles.forEach(h => { %>
+          <label class="habitacion-card">
+            <input type="checkbox" name="habitaciones" value="<%= h.id_habitacion %>">
+            <div class="card-content">
+              <strong>Hab. <%= h.numero %></strong>
+              <span><%= h.tipo %></span>
+              <span>$<%= h.precio %></span>
+            </div>
+          </label>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="error">No hay habitaciones disponibles para estas fechas.</p>
+    <% } %>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn">Confirmar Check-in</button>
+    <a href="/empleado/checkin" class="btn btn-secondary">Cancelar</a>
+  </div>
+</form>
+
+<style>
+.info-reserva {
+  background: #e8f4f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 5px solid #3498db;
+}
+.section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+.habitaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.habitacion-card {
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+.habitacion-card input {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: auto;
+}
+.habitacion-card .card-content {
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.2s;
+}
+.habitacion-card input:checked + .card-content {
+  border-color: #3498db;
+  background: #ebf5fb;
+}
+.habitacion-card strong { display: block; font-size: 1.1em; margin-bottom: 5px; }
+.habitacion-card span { display: block; font-size: 0.9em; color: #666; }
+.error { color: #c0392b; font-weight: bold; }
+</style>

@@ -1,0 +1,41 @@
+<!-- src/views/empleado/dashboard.ejs -->
+<h1>Panel de Empleado</h1>
+<p>Bienvenido al sistema de gestión para empleados.</p>
+
+<div class="dashboard-cards">
+  <div class="card">
+    <h3>Reservas del Día</h3>
+    <p>Gestiona las reservas activas para hoy.</p>
+    <a href="/empleado/reservas" class="btn">Ver Reservas</a>
+  </div>
+  <div class="card">
+    <h3>Check-in Pendientes</h3>
+    <p>Registra la llegada de huéspedes.</p>
+    <a href="/empleado/checkin" class="btn">Ir a Check-in</a>
+  </div>
+  <div class="card">
+    <h3>Habitaciones</h3>
+    <p>Consulta disponibilidad y estado.</p>
+    <a href="/empleado/habitaciones" class="btn">Ver Habitaciones</a>
+  </div>
+</div>
+
+<style>
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #dee2e6;
+}
+.card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+</style>

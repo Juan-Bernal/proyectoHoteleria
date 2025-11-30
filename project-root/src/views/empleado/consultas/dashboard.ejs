@@ -1,0 +1,93 @@
+<!-- src/views/empleado/consultas/dashboard.ejs -->
+<h1>Consultas Rápidas</h1>
+
+<div class="tabs">
+  <a href="/empleado/consultas?tipo=llegadas" class="tab <%= data.tipo === 'llegadas' ? 'active' : '' %>">Llegadas Pendientes</a>
+  <a href="/empleado/consultas?tipo=salidas" class="tab <%= data.tipo === 'salidas' ? 'active' : '' %>">Salidas Hoy</a>
+  <a href="/empleado/consultas?tipo=reservas" class="tab <%= data.tipo === 'reservas' ? 'active' : '' %>">Reservas Hoy</a>
+  <a href="/empleado/consultas?tipo=pagos" class="tab <%= data.tipo === 'pagos' ? 'active' : '' %>">Saldos Pendientes</a>
+</div>
+
+<div class="consulta-content">
+  <h2><%= data.titulo %></h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Huésped</th>
+        <% if (data.tipo === 'pagos') { %>
+          <th>Total</th>
+          <th>Pagado</th>
+          <th>Saldo</th>
+        <% } else { %>
+          <th>Hotel</th>
+          <th>Fechas</th>
+          <th>Estado</th>
+        <% } %>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (data.resultados && data.resultados.length > 0) { %>
+        <% data.resultados.forEach(r => { %>
+          <tr>
+            <td><%= r.id_reserva %></td>
+            <td><%= r.nombre_huesped %></td>
+            
+            <% if (data.tipo === 'pagos') { %>
+              <td>$<%= r.valor_total %></td>
+              <td>$<%= r.total_pagado %></td>
+              <td style="color:red; font-weight:bold">$<%= r.saldo_pendiente %></td>
+              <td><a href="/empleado/checkout/<%= r.id_reserva %>/procesar" class="btn btn-sm">Cobrar</a></td>
+            <% } else { %>
+              <td><%= r.nombre_hotel %></td>
+              <td><%= new Date(r.fecha_inicio).toLocaleDateString() %> - <%= new Date(r.fecha_fin).toLocaleDateString() %></td>
+              <td><%= r.estado %></td>
+              <td>
+                <% if (data.tipo === 'llegadas') { %>
+                  <a href="/empleado/checkin/<%= r.id_reserva %>/procesar" class="btn btn-sm">Check-in</a>
+                <% } else if (data.tipo === 'salidas') { %>
+                  <a href="/empleado/checkout/<%= r.id_reserva %>/procesar" class="btn btn-sm">Check-out</a>
+                <% } else { %>
+                  <a href="/empleado/reservas" class="btn btn-sm">Ver</a>
+                <% } %>
+              </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="6" class="text-center">No se encontraron registros.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<style>
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #dee2e6;
+}
+.tab {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+.tab:hover { color: #3498db; background: #f8f9fa; }
+.tab.active {
+  color: #3498db;
+  border-bottom-color: #3498db;
+  font-weight: bold;
+}
+.consulta-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.btn-sm { padding: 4px 8px; font-size: 0.9em; }
+</style>

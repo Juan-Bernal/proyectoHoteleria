@@ -1,0 +1,121 @@
+<!-- src/views/empleado/checkout/process.ejs -->
+<h1>Finalizar Estadía - Reserva #<%= data.id_reserva %></h1>
+
+<div class="checkout-grid">
+  <div class="resumen-cuenta">
+    <h3>Estado de Cuenta</h3>
+    <div class="item-cuenta">
+      <span>Hospedaje:</span>
+      <span>$<%= data.summary.total_hospedaje %></span>
+    </div>
+    <div class="item-cuenta">
+      <span>Servicios Adicionales:</span>
+      <span>$<%= data.summary.total_servicios %></span>
+    </div>
+    <div class="item-cuenta total">
+      <span>Total General:</span>
+      <span>$<%= data.totalGeneral %></span>
+    </div>
+    <div class="item-cuenta pagado">
+      <span>Total Pagado (Anticipos):</span>
+      <span>-$<%= data.summary.total_pagado %></span>
+    </div>
+    <div class="item-cuenta saldo">
+      <span>Saldo Pendiente:</span>
+      <span>$<%= data.saldoPendiente %></span>
+    </div>
+  </div>
+
+  <div class="detalle-servicios">
+    <h3>Detalle de Servicios</h3>
+    <ul>
+      <% if (data.consumos.length > 0) { %>
+        <% data.consumos.forEach(c => { %>
+          <li>
+            <span><%= c.nombre %> (x<%= c.cantidad %>)</span>
+            <span>$<%= c.total %></span>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <li>No hay servicios adicionales.</li>
+      <% } %>
+    </ul>
+  </div>
+</div>
+
+<form action="/empleado/checkout/procesar" method="POST" class="form-pago">
+  <input type="hidden" name="id_reserva" value="<%= data.id_reserva %>">
+  
+  <h3>Registro de Pago Final</h3>
+  
+  <% if (parseFloat(data.saldoPendiente) > 0) { %>
+    <div class="alert-warning">
+      ⚠️ El huésped tiene un saldo pendiente de <strong>$<%= data.saldoPendiente %></strong>. Debe cancelarlo para finalizar.
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>Monto a Pagar</label>
+        <input type="number" name="monto_pago" value="<%= data.saldoPendiente %>" step="0.01" min="<%= data.saldoPendiente %>" required readonly>
+      </div>
+      <div class="col">
+        <label>Método de Pago</label>
+        <select name="metodo_pago">
+          <option value="EFECTIVO">Efectivo</option>
+          <option value="TARJETA">Tarjeta de Crédito/Débito</option>
+          <option value="TRANSFERENCIA">Transferencia</option>
+        </select>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="alert-success">
+      ✅ La cuenta está saldada. Puede proceder a finalizar la estadía.
+    </div>
+    <input type="hidden" name="monto_pago" value="0">
+    <input type="hidden" name="metodo_pago" value="NA">
+  <% } %>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-lg">Finalizar Estadía y Liberar Habitación</button>
+    <a href="/empleado/checkout" class="btn btn-secondary">Cancelar</a>
+  </div>
+</form>
+
+<style>
+.checkout-grid {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.resumen-cuenta, .detalle-servicios {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid #dee2e6;
+}
+.item-cuenta {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.item-cuenta.total { font-weight: bold; font-size: 1.1em; color: #2c3e50; border-top: 2px solid #dee2e6; margin-top: 10px; }
+.item-cuenta.pagado { color: #27ae60; }
+.item-cuenta.saldo { font-weight: bold; font-size: 1.2em; color: #c0392b; background: #fdedec; padding: 10px; border-radius: 4px; margin-top: 10px; }
+
+.detalle-servicios ul { list-style: none; padding: 0; }
+.detalle-servicios li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
+
+.form-pago {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.alert-warning { background: #fff3cd; color: #856404; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+.alert-success { background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+.btn-lg { padding: 12px 24px; font-size: 1.1em; width: 100%; margin-top: 20px; }
+</style>

@@ -1,0 +1,110 @@
+<!-- src/views/admin/reportes/index.ejs -->
+<h1>Reportes del Sistema</h1>
+
+<div class="reportes-menu">
+  <h2>Reportes del Caso de Estudio</h2>
+  <ul class="reportes-lista">
+    <li>
+      <a href="/admin/reportes/periodo" class="reporte-link">
+        <strong>1. Reservas por Período</strong>
+        <p>Consultar reservas realizadas en un rango de fechas</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/canceladas-sin-anticipo" class="reporte-link">
+        <strong>2. Canceladas Sin Anticipo</strong>
+        <p>Reservas canceladas que no pagaron el 20% de anticipo</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/no-usadas-con-anticipo" class="reporte-link">
+        <strong>3. No Utilizadas con Anticipo</strong>
+        <p>Reservas que pagaron pero no fueron utilizadas</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/llegada-a-tiempo" class="reporte-link">
+        <strong>4. Llegadas a Tiempo</strong>
+        <p>Reservas con check-in antes de las 7:00 PM</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/menores-mascotas" class="reporte-link">
+        <strong>5. Menores de Edad y/o Mascotas</strong>
+        <p>Reservas con niños menores de 18 años o mascotas</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/con-servicios" class="reporte-link">
+        <strong>6. Con Servicios Adicionales</strong>
+        <p>Reservas que pagaron servicios extras</p>
+      </a>
+    </li>
+  </ul>
+
+  <h2>Reportes Adicionales</h2>
+  <ul class="reportes-lista">
+    <li>
+      <a href="/admin/reportes/estadisticas" class="reporte-link">
+        <strong>Estadísticas Mensuales</strong>
+        <p>Resumen estadístico de reservas por mes</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/historial-categorias" class="reporte-link">
+        <strong>Historial de Categorías</strong>
+        <p>Cambios de categoría de hoteles a través del tiempo</p>
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reportes/ocupacion" class="reporte-link">
+        <strong>Ocupación de Hotel</strong>
+        <p>Porcentaje de ocupación por fecha</p>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<style>
+.reportes-menu {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.reportes-lista {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.reportes-lista li {
+  margin-bottom: 15px;
+}
+
+.reporte-link {
+  display: block;
+  padding: 15px 20px;
+  background: #f5f5f5;
+  border-left: 4px solid #007bff;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s;
+}
+
+.reporte-link:hover {
+  background: #e9ecef;
+  border-left-color: #0056b3;
+  transform: translateX(5px);
+}
+
+.reporte-link strong {
+  color: #007bff;
+  font-size: 1.1em;
+}
+
+.reporte-link p {
+  margin: 5px 0 0 0;
+  color: #666;
+  font-size: 0.9em;
+}
+</style>

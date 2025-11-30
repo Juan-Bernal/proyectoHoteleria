@@ -1,0 +1,78 @@
+<!-- src/views/layouts/empleado.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Empleado</title>
+  <link rel="stylesheet" href="/css/empleado.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Menú Empleado</h2>
+    <ul>
+      <li>
+        <strong>1. Reservas</strong>
+        <ul>
+          <li><a href="/empleado/reservas/crear">Crear reserva</a></li>
+          <li><a href="/empleado/reservas">Consultar reserva</a></li>
+          <li><a href="/empleado/reservas">Actualizar reserva</a></li>
+          <li><a href="/empleado/reservas">Cancelar reserva</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>2. Check-in</strong>
+        <ul>
+          <li><a href="/empleado/checkin">Registrar llegada</a></li>
+          <li><a href="/empleado/checkin/pago">Validar pago 80%</a></li>
+          <li><a href="/empleado/checkin/huespedes">Registrar huéspedes</a></li>
+          <li><a href="/empleado/checkin/habitaciones">Asignar habitaciones</a></li>
+          <li><a href="/empleado/checkin/llaves">Confirmar llaves</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>3. Check-out</strong>
+        <ul>
+          <li><a href="/empleado/checkout/servicios">Registrar servicios</a></li>
+          <li><a href="/empleado/checkout/total">Generar total</a></li>
+          <li><a href="/empleado/checkout/disponibilidad">Liberar habitación</a></li>
+          <li><a href="/empleado/checkout/finalizar">Finalizar estadía</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>4. Servicios Adicionales</strong>
+        <ul>
+          <li><a href="/empleado/servicios/registrar">Registrar consumo</a></li>
+          <li><a href="/empleado/servicios/consultar">Consultar consumos</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>5. Habitaciones</strong>
+        <ul>
+          <li><a href="/empleado/habitaciones/disponibilidad">Ver disponibilidad</a></li>
+          <li><a href="/empleado/habitaciones/ocupacion">Ver ocupación</a></li>
+          <li><a href="/empleado/habitaciones/estado">Cambiar estado</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>6. Huéspedes</strong>
+        <ul>
+          <li><a href="/empleado/huespedes/registrar">Registrar huésped</a></li>
+          <li><a href="/empleado/huespedes/consultar">Consultar huéspedes</a></li>
+        </ul>
+      </li>
+      <li>
+        <strong>7. Consultas Rápidas</strong>
+        <ul>
+          <li><a href="/empleado/consultas/reservas-dia">Reservas del día</a></li>
+          <li><a href="/empleado/consultas/llegadas">Llegadas pendientes</a></li>
+          <li><a href="/empleado/consultas/salidas">Salidas del día</a></li>
+          <li><a href="/empleado/consultas/pagos">Pagos pendientes</a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="empleado-main">
+    <%- include(view, typeof data !== 'undefined' ? { data: data } : {}) %>
+  </main>
+</body>
+</html>

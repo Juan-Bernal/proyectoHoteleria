@@ -1,0 +1,24 @@
+<!-- src/views/layouts/admin.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Menú</h2>
+    <ul>
+      <li><a href="/admin/hoteles">Hoteles</a></li>
+      <li><a href="/admin/tipos">Tipos de Habitación</a></li>
+      <li><a href="/admin/habitaciones">Habitaciones</a></li>
+      <li><a href="/admin/servicios">Servicios</a></li>
+      <li><a href="/admin/reportes">Reportes</a></li>
+    </ul>
+  </aside>
+  <main class="admin-main">
+    <%- include(view, typeof data !== 'undefined' ? { data: data } : {}) %>
+  </main>
+</body>
+</html>

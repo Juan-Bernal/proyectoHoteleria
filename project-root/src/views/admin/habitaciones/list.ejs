@@ -1,0 +1,32 @@
+<!-- src/views/admin/habitaciones/list.ejs -->
+<h1>Habitaciones</h1>
+<a href="/admin/habitaciones/create" class="btn">Crear habitación</a>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Número</th>
+      <th>Piso</th>
+      <th>Hotel</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach(h => { %>
+      <tr>
+        <td><%= h.id_habitacion %></td>
+        <td><%= h.numero_habitacion %></td>
+        <td><%= h.nro_piso %></td>
+        <td><%= h.hotel %></td>
+        <td><%= h.tipo %></td>
+        <td>
+          <a href="/admin/habitaciones/<%= h.id_habitacion %>/edit">Editar</a>
+          <form action="/admin/habitaciones/<%= h.id_habitacion %>/delete" method="post" style="display:inline">
+            <button type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

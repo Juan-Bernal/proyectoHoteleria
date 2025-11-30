@@ -1,0 +1,36 @@
+<!-- src/views/empleado/checkout/list.ejs -->
+<h1>Check-out (Salidas)</h1>
+<p>Seleccione una reserva activa para finalizar la estadía.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Huésped</th>
+      <th>Hotel</th>
+      <th>Fecha Inicio</th>
+      <th>Fecha Fin Prevista</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (data && data.length > 0) { %>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= new Date(r.fecha_fin).toLocaleDateString() %></td>
+          <td>
+            <a href="/empleado/checkout/<%= r.id_reserva %>/procesar" class="btn">Procesar Salida</a>
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="6" class="text-center">No hay reservas activas (En Curso).</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

@@ -1,0 +1,12 @@
+<!-- src/views/admin/servicios/create.ejs -->
+<h1>Crear servicio</h1>
+<form action="/admin/servicios/create" method="post">
+  <label>Nombre</label>
+  <input type="text" name="nombre" required>
+  <label>Descripción</label>
+  <textarea name="descripcion" required></textarea>
+  <label>Precio</label>
+  <input type="number" name="precio" step="0.01" required>
+  <button type="submit">Guardar</button>
+  <a href="/admin/servicios" class="btn">Cancelar</a>
+</form>

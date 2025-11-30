@@ -1,0 +1,103 @@
+<!-- src/views/admin/reportes/conServicios.ejs -->
+<h1>Reporte: Reservas con Servicios Adicionales</h1>
+<p class="descripcion">Reservas que consumieron servicios adicionales durante su estadía.</p>
+
+<a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Total: <%= data.length %> servicios consumidos</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Reserva</th>
+        <th>Fecha Inicio</th>
+        <th>Fecha Fin</th>
+        <th>Huésped</th>
+        <th>Hotel</th>
+        <th>Servicio</th>
+        <th>Cantidad</th>
+        <th>Precio Unit.</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% 
+      let currentReserva = null;
+      let subtotal = 0;
+      data.forEach((r, index) => { 
+        const isNewReserva = currentReserva !== r.id_reserva;
+        if (isNewReserva && currentReserva !== null) {
+      %>
+        <tr class="subtotal-row">
+          <td colspan="8" class="text-right"><strong>Subtotal Reserva <%= currentReserva %>:</strong></td>
+          <td><strong>$<%= subtotal.toFixed(2) %></strong></td>
+        </tr>
+      <% 
+          subtotal = 0;
+        }
+        currentReserva = r.id_reserva;
+        subtotal += parseFloat(r.total_servicio);
+      %>
+        <tr>
+          <td><%= isNewReserva ? r.id_reserva : '' %></td>
+          <td><%= isNewReserva ? new Date(r.fecha_inicio).toLocaleDateString() : '' %></td>
+          <td><%= isNewReserva ? new Date(r.fecha_fin).toLocaleDateString() : '' %></td>
+          <td><%= isNewReserva ? r.nombre_huesped : '' %></td>
+          <td><%= isNewReserva ? r.nombre_hotel : '' %></td>
+          <td><%= r.servicio %></td>
+          <td><%= r.cantidad %></td>
+          <td>$<%= r.precio_unitario %></td>
+          <td>$<%= r.total_servicio %></td>
+        </tr>
+      <% 
+        if (index === data.length - 1) {
+      %>
+        <tr class="subtotal-row">
+          <td colspan="8" class="text-right"><strong>Subtotal Reserva <%= currentReserva %>:</strong></td>
+          <td><strong>$<%= subtotal.toFixed(2) %></strong></td>
+        </tr>
+      <% 
+        }
+      }) 
+      %>
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="8" class="text-right"><strong>TOTAL GENERAL:</strong></td>
+        <td><strong>$<%= data.reduce((sum, r) => sum + parseFloat(r.total_servicio), 0).toFixed(2) %></strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="resumen">
+    <h4>Resumen</h4>
+    <p>Reservas únicas: <%= new Set(data.map(r => r.id_reserva)).size %></p>
+    <p>Servicios diferentes: <%= new Set(data.map(r => r.servicio)).size %></p>
+  </div>
+<% } else { %>
+  <p class="no-resultados">No hay reservas con servicios adicionales consumidos.</p>
+<% } %>
+
+<style>
+.subtotal-row {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+.total-row {
+  background-color: #007bff;
+  color: white;
+  font-size: 1.1em;
+}
+.text-right {
+  text-align: right;
+}
+.resumen {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+.resumen h4 {
+  margin-top: 0;
+}
+</style>

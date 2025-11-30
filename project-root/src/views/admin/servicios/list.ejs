@@ -1,0 +1,30 @@
+<!-- src/views/admin/servicios/list.ejs -->
+<h1>Servicios Adicionales</h1>
+<a href="/admin/servicios/create" class="btn">Crear servicio</a>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach(s => { %>
+      <tr>
+        <td><%= s.id_servicio %></td>
+        <td><%= s.nombre %></td>
+        <td><%= s.descripcion %></td>
+        <td>$<%= s.precio %></td>
+        <td>
+          <a href="/admin/servicios/<%= s.id_servicio %>/edit">Editar</a>
+          <form action="/admin/servicios/<%= s.id_servicio %>/delete" method="post" style="display:inline">
+            <button type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

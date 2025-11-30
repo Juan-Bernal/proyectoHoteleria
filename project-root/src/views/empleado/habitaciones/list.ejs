@@ -1,0 +1,63 @@
+<!-- src/views/empleado/habitaciones/list.ejs -->
+<h1>Estado de Habitaciones</h1>
+
+<div class="habitaciones-grid">
+  <% data.forEach(h => { %>
+    <div class="habitacion-card <%= h.estado_actual.toLowerCase() %>">
+      <div class="card-header">
+        <span class="numero"><%= h.numero %></span>
+        <span class="piso">Piso <%= h.nro_piso %></span>
+      </div>
+      <div class="card-body">
+        <p class="tipo"><%= h.tipo %></p>
+        <p class="estado"><%= h.estado_actual %></p>
+        <% if (h.estado_actual === 'OCUPADA') { %>
+          <p class="huesped"><%= h.nombre_huesped %></p>
+        <% } %>
+      </div>
+      <div class="card-footer">
+        <form action="/empleado/habitaciones/<%= h.id_habitacion %>/estado" method="POST">
+          <select name="estado" onchange="this.form.submit()">
+            <option value="DISPONIBLE" <%= h.estado_fisico === 'DISPONIBLE' ? 'selected' : '' %>>Disponible</option>
+            <option value="LIMPIEZA" <%= h.estado_fisico === 'LIMPIEZA' ? 'selected' : '' %>>Limpieza</option>
+            <option value="MANTENIMIENTO" <%= h.estado_fisico === 'MANTENIMIENTO' ? 'selected' : '' %>>Mantenimiento</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<style>
+.habitaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.habitacion-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.habitacion-card.ocupada { border-top: 5px solid #e74c3c; }
+.habitacion-card.disponible { border-top: 5px solid #27ae60; }
+.habitacion-card.limpieza { border-top: 5px solid #f1c40f; }
+.habitacion-card.mantenimiento { border-top: 5px solid #7f8c8d; }
+
+.card-header {
+  padding: 10px;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.card-body { padding: 15px; text-align: center; }
+.card-footer { padding: 10px; background: #f8f9fa; }
+.card-footer select { width: 100%; padding: 5px; }
+.numero { font-size: 1.2em; }
+.tipo { color: #666; margin: 0; }
+.estado { font-weight: bold; margin: 5px 0; }
+.huesped { font-size: 0.9em; color: #3498db; }
+</style>

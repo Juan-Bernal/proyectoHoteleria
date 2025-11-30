@@ -1,0 +1,12 @@
+<!-- src/views/admin/tipos/edit.ejs -->
+<h1>Editar Tipo de Habitación</h1>
+<form action="/admin/tipos/<%= data.id_tipo_habitacion %>/edit" method="post">
+  <label>Nombre</label>
+  <input type="text" name="nombre" value="<%= data.nombre %>" required>
+  <label>Capacidad Máxima</label>
+  <input type="number" name="capacidad_max" value="<%= data.capacidad_max %>" required>
+  <label>Precio</label>
+  <input type="number" step="0.01" name="precio" value="<%= data.precio %>" required>
+  <button type="submit">Actualizar</button>
+  <a href="/admin/tipos" class="btn">Cancelar</a>
+</form>

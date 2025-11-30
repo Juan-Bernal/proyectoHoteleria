@@ -1,0 +1,71 @@
+<!-- src/views/empleado/reservas/list.ejs -->
+<div class="header-actions">
+  <h1>Gestión de Reservas</h1>
+  <a href="/empleado/reservas/crear" class="btn">Nueva Reserva</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fecha Inicio</th>
+      <th>Fecha Fin</th>
+      <th>Huésped</th>
+      <th>Hotel</th>
+      <th>Estado</th>
+      <th>Total</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (data && data.length > 0) { %>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= new Date(r.fecha_fin).toLocaleDateString() %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td>
+            <span class="badge badge-<%= r.estado === 'PENDIENTE' ? 'warning' : r.estado === 'CONFIRMADA' ? 'success' : 'danger' %>">
+              <%= r.estado %>
+            </span>
+          </td>
+          <td>$<%= r.valor_total %></td>
+          <td>
+            <% if (r.estado !== 'CANCELADA') { %>
+              <form action="/empleado/reservas/<%= r.id_reserva %>/cancelar" method="POST" style="display:inline" onsubmit="return confirm('¿Seguro que desea cancelar?')">
+                <button type="submit" class="btn-danger btn-sm">Cancelar</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="8" class="text-center">No hay reservas registradas.</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<style>
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: white;
+}
+.badge-warning { background: #f39c12; }
+.badge-success { background: #27ae60; }
+.badge-danger { background: #c0392b; }
+.btn-danger { background: #c0392b; }
+.btn-sm { padding: 4px 8px; font-size: 0.9em; }
+.text-center { text-align: center; }
+</style>

@@ -1,0 +1,40 @@
+<!-- src/views/empleado/huespedes/list.ejs -->
+<div class="header-actions">
+  <h1>Directorio de Huéspedes</h1>
+  <a href="/empleado/huespedes/crear" class="btn">Nuevo Huésped</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Cédula</th>
+      <th>Correo</th>
+      <th>Teléfono</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach(h => { %>
+      <tr>
+        <td><%= h.nombre %></td>
+        <td><%= h.cedula %></td>
+        <td><%= h.correo %></td>
+        <td><%= h.telefono %></td>
+        <td>
+          <a href="/empleado/huespedes/<%= h.id_huesped %>" class="btn btn-sm">Ver Historial</a>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<style>
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.btn-sm { padding: 4px 8px; font-size: 0.9em; }
+</style>

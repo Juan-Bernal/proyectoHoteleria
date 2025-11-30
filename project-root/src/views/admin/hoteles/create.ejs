@@ -1,0 +1,14 @@
+<!-- src/views/admin/hoteles/create.ejs -->
+<h1>Crear hotel</h1>
+<form action="/admin/hoteles/create" method="post">
+  <label>Nombre</label>
+  <input type="text" name="nombre" required>
+  <label>Dirección</label>
+  <input type="text" name="direccion" required>
+  <label>Año inauguración</label>
+  <input type="number" name="anio_inauguracion" required>
+  <label>Categoría</label>
+  <input type="number" name="id_categoria" required>
+  <button type="submit">Guardar</button>
+  <a href="/admin/hoteles" class="btn">Cancelar</a>
+</form>

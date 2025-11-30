@@ -1,0 +1,14 @@
+<!-- src/views/admin/hoteles/edit.ejs -->
+<h1>Editar hotel</h1>
+<form action="/admin/hoteles/<%= data.id_hotel %>/edit" method="post">
+  <label>Nombre</label>
+  <input type="text" name="nombre" value="<%= data.nombre %>" required>
+  <label>Dirección</label>
+  <input type="text" name="direccion" value="<%= data.direccion %>" required>
+  <label>Año inauguración</label>
+  <input type="number" name="anio_inauguracion" value="<%= data.anio_inauguracion %>" required>
+  <label>Categoría</label>
+  <input type="number" name="id_categoria" value="<%= data.id_categoria %>" required>
+  <button type="submit">Actualizar</button>
+  <a href="/admin/hoteles" class="btn">Cancelar</a>
+</form>

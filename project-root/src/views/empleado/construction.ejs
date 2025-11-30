@@ -1,0 +1,37 @@
+<!-- src/views/empleado/construction.ejs -->
+<div class="construction-container">
+  <h1><%= typeof data !== 'undefined' && data.title ? data.title : 'Página' %></h1>
+  <div class="construction-content">
+    <div class="icon">🚧</div>
+    <h2>En Construcción</h2>
+    <p>Esta funcionalidad está siendo implementada. Pronto podrás acceder a ella.</p>
+    <a href="/empleado" class="btn">Volver al Inicio</a>
+  </div>
+</div>
+
+<style>
+.construction-container {
+  text-align: center;
+  padding: 40px;
+}
+.construction-content {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: inline-block;
+  max-width: 500px;
+}
+.icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+h2 {
+  color: #f39c12;
+  margin-top: 0;
+}
+p {
+  color: #7f8c8d;
+  margin-bottom: 30px;
+}
+</style>

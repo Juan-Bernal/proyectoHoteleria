@@ -1,0 +1,98 @@
+<!-- src/views/admin/reportes/menoresMascotas.ejs -->
+<h1>Reporte: Reservas con Menores de Edad y/o Mascotas</h1>
+<p class="descripcion">Reservas que incluyen niños menores de 18 años o mascotas.</p>
+
+<a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Total: <%= data.length %> reservas</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Reserva</th>
+        <th>Fecha Reserva</th>
+        <th>Fecha Inicio</th>
+        <th>Responsable</th>
+        <th>Hotel</th>
+        <th>¿Menores?</th>
+        <th>¿Mascotas?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= new Date(r.fecha_reserva).toLocaleDateString() %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= r.nombre_responsable %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td>
+            <% if (r.tiene_menores === 'Sí') { %>
+              <span class="badge badge-info">✓ Sí</span>
+            <% } else { %>
+              <span class="badge badge-secondary">No</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (r.tiene_mascotas === 'Sí') { %>
+              <span class="badge badge-warning">✓ Sí</span>
+            <% } else { %>
+              <span class="badge badge-secondary">No</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div class="estadisticas-extra">
+    <div class="stat-box">
+      <h4>Con Menores</h4>
+      <p class="stat-number"><%= data.filter(r => r.tiene_menores === 'Sí').length %></p>
+    </div>
+    <div class="stat-box">
+      <h4>Con Mascotas</h4>
+      <p class="stat-number"><%= data.filter(r => r.tiene_mascotas === 'Sí').length %></p>
+    </div>
+    <div class="stat-box">
+      <h4>Con Ambos</h4>
+      <p class="stat-number"><%= data.filter(r => r.tiene_menores === 'Sí' && r.tiene_mascotas === 'Sí').length %></p>
+    </div>
+  </div>
+<% } else { %>
+  <p class="no-resultados">No hay reservas con menores o mascotas.</p>
+<% } %>
+
+<style>
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-warning { background-color: #ffc107; color: #333; }
+.badge-secondary { background-color: #6c757d; color: white; }
+
+.estadisticas-extra {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+.stat-box {
+  flex: 1;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+.stat-box h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+.stat-number {
+  font-size: 2em;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+</style>

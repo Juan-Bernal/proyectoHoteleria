@@ -1,0 +1,26 @@
+<!-- src/views/admin/habitaciones/edit.ejs -->
+<h1>Editar Habitación</h1>
+<form action="/admin/habitaciones/<%= data.id_habitacion %>/edit" method="post">
+  <label>Hotel</label>
+  <select name="id_hotel" required>
+    <% hoteles.forEach(h => { %>
+      <option value="<%= h.id_hotel %>" <%= h.id_hotel === data.id_hotel ? 'selected' : '' %>><%= h.nombre %></option>
+    <% }) %>
+  </select>
+
+  <label>Tipo de Habitación</label>
+  <select name="id_tipo_habitacion" required>
+    <% tipos.forEach(t => { %>
+      <option value="<%= t.id_tipo_habitacion %>" <%= t.id_tipo_habitacion === data.id_tipo_habitacion ? 'selected' : '' %>><%= t.nombre %></option>
+    <% }) %>
+  </select>
+
+  <label>Número</label>
+  <input type="text" name="numero_habitacion" value="<%= data.numero_habitacion %>" required>
+
+  <label>Piso</label>
+  <input type="number" name="nro_piso" value="<%= data.nro_piso %>" required>
+
+  <button type="submit">Actualizar</button>
+  <a href="/admin/habitaciones" class="btn">Cancelar</a>
+</form>

@@ -1,0 +1,38 @@
+<!-- src/views/empleado/checkin/list.ejs -->
+<h1>Check-in Pendientes</h1>
+<p>Reservas programadas para iniciar hoy o pendientes de ingreso.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Huésped</th>
+      <th>Cédula</th>
+      <th>Hotel</th>
+      <th>Fecha Inicio</th>
+      <th>Total</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (data && data.length > 0) { %>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.cedula %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td>$<%= r.valor_total %></td>
+          <td>
+            <a href="/empleado/checkin/<%= r.id_reserva %>/procesar" class="btn">Realizar Check-in</a>
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="7" class="text-center">No hay check-ins pendientes para hoy.</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

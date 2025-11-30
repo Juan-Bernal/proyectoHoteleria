@@ -1,0 +1,61 @@
+<!-- src/views/admin/reportes/noUsadasConAnticipo.ejs -->
+<h1>Reporte: Reservas No Utilizadas con Anticipo Pagado</h1>
+<p class="descripcion">Reservas que pagaron el 20% de anticipo pero no fueron utilizadas (no se realizó check-in).</p>
+
+<a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Total: <%= data.length %> reservas</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Reserva</th>
+        <th>Fecha Reserva</th>
+        <th>Fecha Inicio</th>
+        <th>Huésped</th>
+        <th>Cédula</th>
+        <th>Hotel</th>
+        <th>Valor Total</th>
+        <th>Anticipo Pagado</th>
+        <th>Fecha Pago</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= new Date(r.fecha_reserva).toLocaleDateString() %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.cedula %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td>$<%= r.valor_total %></td>
+          <td class="highlight">$<%= r.anticipo_pagado %></td>
+          <td><%= new Date(r.fecha_pago).toLocaleDateString() %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  
+  <div class="total-perdido">
+    <strong>Total perdido en anticipos:</strong> 
+    $<%= data.reduce((sum, r) => sum + parseFloat(r.anticipo_pagado), 0).toFixed(2) %>
+  </div>
+<% } else { %>
+  <p class="no-resultados">No hay reservas no utilizadas con anticipo pagado.</p>
+<% } %>
+
+<style>
+.highlight {
+  background-color: #fff3cd;
+  font-weight: bold;
+}
+.total-perdido {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  font-size: 1.1em;
+}
+</style>

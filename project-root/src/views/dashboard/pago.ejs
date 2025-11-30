@@ -1,0 +1,87 @@
+<!-- src/views/dashboard/pago.ejs -->
+<div class="container">
+  <div class="form-container">
+    <h1 style="margin-bottom: 2rem; text-align: center;">
+      <i class="fas fa-credit-card"></i> Pago del Anticipo
+    </h1>
+
+    <div class="booking-summary">
+      <h2 style="margin-bottom: 1rem;"><i class="fas fa-file-invoice"></i> Resumen de la Reserva</h2>
+      
+      <div class="summary-row">
+        <span>Habitación:</span>
+        <span><%= data.habitacion.tipo_nombre %></span>
+      </div>
+      <div class="summary-row">
+        <span>Huésped:</span>
+        <span><%= data.reserva.nombre %></span>
+      </div>
+      <div class="summary-row">
+        <span>Entrada:</span>
+        <span><%= new Date(data.reserva.fecha_inicio).toLocaleDateString() %></span>
+      </div>
+      <div class="summary-row">
+        <span>Salida:</span>
+        <span><%= new Date(data.reserva.fecha_fin).toLocaleDateString() %></span>
+      </div>
+      <div class="summary-row">
+        <span>Personas:</span>
+        <span><%= data.reserva.cantidad_personas %></span>
+      </div>
+      <div class="summary-row">
+        <span>Valor Total:</span>
+        <span>$<%= data.reserva.valor_total.toLocaleString() %></span>
+      </div>
+      <div class="summary-row">
+        <span>Anticipo (20%):</span>
+        <span>$<%= data.reserva.anticipo.toLocaleString() %></span>
+      </div>
+    </div>
+
+    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: var(--radius); margin: 2rem 0;">
+      <p style="margin: 0; color: #92400e;">
+        <i class="fas fa-info-circle"></i> 
+        <strong>Importante:</strong> Debes pagar el 20% del valor total ($<%= data.reserva.anticipo.toLocaleString() %>) para confirmar tu reserva.
+      </p>
+    </div>
+
+    <form action="/dashboard/pago" method="POST">
+      <h2 style="margin: 2rem 0 1rem 0;"><i class="fas fa-credit-card"></i> Datos de Pago</h2>
+      <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+        <i class="fas fa-lock"></i> Esta es una simulación de pago. En producción se integraría con una pasarela real.
+      </p>
+
+      <div class="form-group">
+        <label for="metodo_pago">Método de Pago *</label>
+        <select id="metodo_pago" name="metodo_pago" required>
+          <option value="TARJETA_CREDITO">Tarjeta de Crédito</option>
+          <option value="TARJETA_DEBITO">Tarjeta de Débito</option>
+          <option value="TRANSFERENCIA">Transferencia Bancaria</option>
+          <option value="EFECTIVO">Efectivo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="numero_tarjeta">Número de Tarjeta (Simulado)</label>
+        <input type="text" id="numero_tarjeta" placeholder="4111 1111 1111 1111" maxlength="19">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fecha_expiracion">Fecha de Expiración</label>
+          <input type="text" id="fecha_expiracion" placeholder="MM/AA" maxlength="5">
+        </div>
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" placeholder="123" maxlength="3">
+        </div>
+      </div>
+
+      <div style="margin-top: 3rem; text-align: center;">
+        <button type="submit" class="btn btn-success" style="font-size: 1.125rem; padding: 1rem 3rem;">
+          <i class="fas fa-check-circle"></i> Confirmar Pago de $<%= data.reserva.anticipo.toLocaleString() %>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

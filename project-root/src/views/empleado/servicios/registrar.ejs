@@ -1,0 +1,101 @@
+<!-- src/views/empleado/servicios/registrar.ejs -->
+<h1>Registrar Consumo de Servicios</h1>
+<p>Agregue servicios adicionales a una reserva activa.</p>
+
+<form action="/empleado/servicios/registrar" method="GET" class="selector-reserva">
+  <label>Seleccionar Reserva Activa:</label>
+  <div class="row">
+    <select name="id_reserva" onchange="this.form.submit()">
+      <option value="">-- Seleccione --</option>
+      <% data.reservas.forEach(r => { %>
+        <option value="<%= r.id_reserva %>" <%= data.reservaSeleccionada == r.id_reserva ? 'selected' : '' %>>
+          #<%= r.id_reserva %> - <%= r.nombre_huesped %> (<%= r.nombre_hotel %>)
+        </option>
+      <% }) %>
+    </select>
+  </div>
+</form>
+
+<% if (data.reservaSeleccionada) { %>
+  <div class="registro-container">
+    <div class="form-registro">
+      <h3>Agregar Nuevo Servicio</h3>
+      <form action="/empleado/servicios/registrar" method="POST">
+        <input type="hidden" name="id_reserva" value="<%= data.reservaSeleccionada %>">
+        
+        <label>Servicio</label>
+        <select name="id_servicio" required>
+          <% data.servicios.forEach(s => { %>
+            <option value="<%= s.id_servicio %>"><%= s.nombre %> - $<%= s.precio %></option>
+          <% }) %>
+        </select>
+
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" value="1" min="1" required>
+
+        <button type="submit" class="btn">Registrar Consumo</button>
+      </form>
+    </div>
+
+    <div class="lista-consumos">
+      <h3>Consumos Registrados</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Precio Unit.</th>
+            <th>Cant.</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (data.consumos && data.consumos.length > 0) { %>
+            <% let totalGeneral = 0; %>
+            <% data.consumos.forEach(c => { totalGeneral += parseFloat(c.total); %>
+              <tr>
+                <td><%= c.nombre %></td>
+                <td>$<%= c.precio %></td>
+                <td><%= c.cantidad %></td>
+                <td>$<%= c.total %></td>
+              </tr>
+            <% }) %>
+            <tr class="total-row">
+              <td colspan="3" class="text-right"><strong>Total Servicios:</strong></td>
+              <td><strong>$<%= totalGeneral.toFixed(2) %></strong></td>
+            </tr>
+          <% } else { %>
+            <tr><td colspan="4" class="text-center">No hay consumos registrados.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+
+<style>
+.selector-reserva {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.registro-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.form-registro, .lista-consumos {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid #dee2e6;
+}
+.total-row {
+  background: #e9ecef;
+}
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+</style>

@@ -1,0 +1,34 @@
+<!-- src/views/empleado/huespedes/create.ejs -->
+<h1>Registrar Nuevo Huésped</h1>
+
+<form action="/empleado/huespedes/crear" method="POST" style="max-width: 600px;">
+  <div class="form-group">
+    <label>Nombre Completo</label>
+    <input type="text" name="nombre" required>
+  </div>
+  <div class="form-group">
+    <label>Cédula / Documento</label>
+    <input type="text" name="cedula" required>
+  </div>
+  <div class="form-group">
+    <label>Correo Electrónico</label>
+    <input type="email" name="correo" required>
+  </div>
+  <div class="form-group">
+    <label>Teléfono</label>
+    <input type="text" name="telefono" required>
+  </div>
+  <div class="form-group">
+    <label>Fecha de Nacimiento</label>
+    <input type="date" name="fecha_nacimiento" required>
+  </div>
+
+  <button type="submit" class="btn">Guardar Huésped</button>
+  <a href="/empleado/huespedes" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<style>
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; color: #666; }
+input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+</style>

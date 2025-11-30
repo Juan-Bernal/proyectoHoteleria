@@ -1,0 +1,39 @@
+<!-- src/views/admin/reportes/canceladasSinAnticipo.ejs -->
+<h1>Reporte: Reservas Canceladas Sin Anticipo</h1>
+<p class="descripcion">Reservas que fueron canceladas sin haber pagado el 20% de anticipo.</p>
+
+<a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Total: <%= data.length %> reservas</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Reserva</th>
+        <th>Fecha Reserva</th>
+        <th>Fecha Inicio</th>
+        <th>Huésped</th>
+        <th>Cédula</th>
+        <th>Hotel</th>
+        <th>Valor Total</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= new Date(r.fecha_reserva).toLocaleDateString() %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.cedula %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td>$<%= r.valor_total %></td>
+          <td><span class="badge badge-danger"><%= r.estado %></span></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p class="no-resultados">No hay reservas canceladas sin anticipo.</p>
+<% } %>

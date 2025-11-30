@@ -1,0 +1,112 @@
+<!-- src/views/dashboard/reservar.ejs -->
+<div class="container">
+  <div style="margin-bottom: 2rem;">
+    <a href="/dashboard/habitacion/<%= data.habitacion.id_habitacion %>" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> Volver al Detalle
+    </a>
+  </div>
+
+  <div class="form-container">
+    <h1 style="margin-bottom: 2rem; text-align: center;">
+      <i class="fas fa-calendar-check"></i> Completar Reserva
+    </h1>
+
+    <div style="background: var(--bg-light); padding: 1rem; border-radius: var(--radius); margin-bottom: 2rem;">
+      <h3><%= data.habitacion.tipo_nombre %></h3>
+      <p style="color: var(--text-light);">
+        <%= data.habitacion.hotel_nombre %> - Habitación <%= data.habitacion.numero_habitacion %>
+      </p>
+    </div>
+
+    <form action="/dashboard/reservar" method="POST">
+      <input type="hidden" name="id_habitacion" value="<%= data.habitacion.id_habitacion %>">
+      <input type="hidden" name="id_hotel" value="<%= data.habitacion.id_hotel %>">
+
+      <h2 style="margin: 2rem 0 1rem 0;"><i class="fas fa-user"></i> Datos del Huésped</h2>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo *</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="cedula">Cédula / Documento *</label>
+          <input type="text" id="cedula" name="cedula" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion">
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono *</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_nacimiento">Fecha de Nacimiento *</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+      </div>
+
+      <h2 style="margin: 2rem 0 1rem 0;"><i class="fas fa-calendar"></i> Detalles de la Reserva</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fecha_inicio">Fecha de Entrada *</label>
+          <input type="date" id="fecha_inicio" name="fecha_inicio" required min="<%= new Date().toISOString().split('T')[0] %>">
+        </div>
+        <div class="form-group">
+          <label for="fecha_fin">Fecha de Salida *</label>
+          <input type="date" id="fecha_fin" name="fecha_fin" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cantidad_personas">Cantidad de Personas *</label>
+          <input type="number" id="cantidad_personas" name="cantidad_personas" min="1" max="<%= data.habitacion.capacidad_max %>" required>
+          <small style="color: var(--text-light);">Capacidad máxima: <%= data.habitacion.capacidad_max %> personas</small>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="incluye_mascotas" style="width: auto; margin-right: 0.5rem;">
+            ¿Incluye Mascotas?
+          </label>
+        </div>
+      </div>
+
+      <h2 style="margin: 2rem 0 1rem 0;"><i class="fas fa-concierge-bell"></i> Servicios Adicionales</h2>
+      <p style="color: var(--text-light); margin-bottom: 1rem;">Selecciona los servicios que deseas agregar a tu reserva:</p>
+
+      <div style="display: grid; gap: 0.5rem;">
+        <% data.servicios.forEach(servicio => { %>
+          <label class="checkbox-group">
+            <input type="checkbox" name="servicios" value="<%= servicio.id_servicio %>">
+            <div style="flex: 1;">
+              <strong><%= servicio.nombre %></strong>
+              <span style="color: var(--text-light); margin-left: 0.5rem;">
+                +$<%= servicio.precio.toLocaleString() %>
+              </span>
+            </div>
+          </label>
+        <% }) %>
+      </div>
+
+      <div style="margin-top: 3rem; text-align: center;">
+        <button type="submit" class="btn btn-success" style="font-size: 1.125rem; padding: 1rem 3rem;">
+          <i class="fas fa-arrow-right"></i> Continuar al Pago
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Validar que fecha_fin sea posterior a fecha_inicio
+document.getElementById('fecha_inicio').addEventListener('change', function() {
+  document.getElementById('fecha_fin').min = this.value;
+});
+</script>

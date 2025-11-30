@@ -1,0 +1,30 @@
+<!-- src/views/admin/tipos/list.ejs -->
+<h1>Tipos de Habitación</h1>
+<a href="/admin/tipos/create" class="btn">Crear tipo</a>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Capacidad Máxima</th>
+      <th>Precio</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach(t => { %>
+      <tr>
+        <td><%= t.id_tipo_habitacion %></td>
+        <td><%= t.nombre %></td>
+        <td><%= t.capacidad_max %></td>
+        <td><%= t.precio %></td>
+        <td>
+          <a href="/admin/tipos/<%= t.id_tipo_habitacion %>/edit">Editar</a>
+          <form action="/admin/tipos/<%= t.id_tipo_habitacion %>/delete" method="post" style="display:inline">
+            <button type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

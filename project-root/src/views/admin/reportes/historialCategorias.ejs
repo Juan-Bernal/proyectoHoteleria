@@ -1,0 +1,166 @@
+<!-- src/views/admin/reportes/historialCategorias.ejs -->
+<h1>Historial de Cambios de Categoría</h1>
+<p class="descripcion">Registro histórico de cambios de categoría de hoteles (usando triggers de base de datos).</p>
+
+<form method="GET" class="filtro-form">
+  <div class="form-group">
+    <label>Seleccionar Hotel:</label>
+    <select name="id_hotel" required>
+      <option value="">-- Seleccione un hotel --</option>
+      <% if (typeof hoteles !== 'undefined') { %>
+        <% hoteles.forEach(h => { %>
+          <option value="<%= h.id_hotel %>" <%= hotelSeleccionado == h.id_hotel ? 'selected' : '' %>>
+            <%= h.nombre %>
+          </option>
+        <% }) %>
+      <% } %>
+    </select>
+  </div>
+  <button type="submit" class="btn">Ver Historial</button>
+  <a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+</form>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Historial de <%= data[0].nombre_hotel %></h3>
+  <p class="info-box">
+    <strong>ℹ️ Nota:</strong> Este historial se genera automáticamente mediante triggers de base de datos 
+    cada vez que se actualiza la categoría de un hotel.
+  </p>
+  
+  <div class="timeline">
+    <% data.forEach((cambio, index) => { %>
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">
+            <%= new Date(cambio.fecha_cambio).toLocaleString() %>
+          </div>
+          <div class="cambio-detalle">
+            <div class="categoria-box anterior">
+              <span class="label">Categoría Anterior:</span>
+              <span class="categoria">
+                <%= cambio.nombre_categoria_anterior || 'Sin categoría' %>
+                <small>(ID: <%= cambio.categoria_anterior || 'N/A' %>)</small>
+              </span>
+            </div>
+            <div class="arrow">→</div>
+            <div class="categoria-box nueva">
+              <span class="label">Categoría Nueva:</span>
+              <span class="categoria">
+                <%= cambio.nombre_categoria_nueva %>
+                <small>(ID: <%= cambio.categoria_nueva %>)</small>
+              </span>
+            </div>
+          </div>
+          <% if (cambio.motivo) { %>
+            <div class="motivo">
+              <strong>Motivo:</strong> <%= cambio.motivo %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else if (typeof hotelSeleccionado !== 'undefined' && hotelSeleccionado) { %>
+  <p class="no-resultados">No hay cambios de categoría registrados para este hotel.</p>
+<% } %>
+
+<style>
+.info-box {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 20px 0;
+  color: #0c5460;
+}
+.timeline {
+  position: relative;
+  padding: 20px 0;
+  margin-left: 30px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #007bff;
+}
+.timeline-item {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 30px;
+}
+.timeline-marker {
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #007bff;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #007bff;
+}
+.timeline-content {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.timeline-date {
+  font-size: 0.9em;
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+.cambio-detalle {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+.categoria-box {
+  flex: 1;
+  padding: 15px;
+  border-radius: 6px;
+}
+.categoria-box.anterior {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+.categoria-box.nueva {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+.categoria-box .label {
+  display: block;
+  font-size: 0.85em;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+.categoria-box .categoria {
+  display: block;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+.categoria-box small {
+  display: block;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #6c757d;
+}
+.arrow {
+  font-size: 2em;
+  color: #007bff;
+}
+.motivo {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+</style>

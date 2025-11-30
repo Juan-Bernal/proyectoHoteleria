@@ -1,0 +1,43 @@
+<!-- src/views/admin/reportes/llegadaATiempo.ejs -->
+<h1>Reporte: Reservas con Llegada a Tiempo</h1>
+<p class="descripcion">Reservas donde el check-in se realizó antes de las 7:00 PM del día de inicio.</p>
+
+<a href="/admin/reportes" class="btn btn-secondary">Volver</a>
+
+<% if (typeof data !== 'undefined' && data.length > 0) { %>
+  <h3>Total: <%= data.length %> reservas</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Reserva</th>
+        <th>Fecha Inicio</th>
+        <th>Huésped</th>
+        <th>Hotel</th>
+        <th>Fecha/Hora Check-in</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(r => { %>
+        <tr>
+          <td><%= r.id_reserva %></td>
+          <td><%= new Date(r.fecha_inicio).toLocaleDateString() %></td>
+          <td><%= r.nombre_huesped %></td>
+          <td><%= r.nombre_hotel %></td>
+          <td><%= new Date(r.fecha_evento).toLocaleString() %></td>
+          <td class="hora-<%= r.hora_llegada < 15 ? 'temprano' : r.hora_llegada < 17 ? 'normal' : 'tarde' %>">
+            <%= r.hora_llegada %>:00
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p class="no-resultados">No hay registros de llegadas a tiempo.</p>
+<% } %>
+
+<style>
+.hora-temprano { color: #28a745; font-weight: bold; }
+.hora-normal { color: #17a2b8; }
+.hora-tarde { color: #ffc107; }
+</style>

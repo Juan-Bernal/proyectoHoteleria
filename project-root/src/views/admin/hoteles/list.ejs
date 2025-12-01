@@ -1,6 +1,11 @@
 <!-- src/views/admin/hoteles/list.ejs -->
+
 <h1>Hoteles</h1>
+
+<!-- Botón para crear un nuevo hotel -->
 <a href="/admin/hoteles/create" class="btn">Crear hotel</a>
+
+<!-- Tabla de hoteles -->
 <table>
   <thead>
     <tr>
@@ -20,10 +25,13 @@
         <td><%= h.direccion %></td>
         <td><%= h.anio_inauguracion %></td>
         <td><%= h.categoria %></td>
-        <td>
-          <a href="/admin/hoteles/<%= h.id_hotel %>/edit">Editar</a>
+        <td class="actions">
+          <!-- Botón de editar como botón -->
+          <a href="/admin/hoteles/<%= h.id_hotel %>/edit" class="btn editar">Editar</a>
+
+          <!-- Formulario para eliminar hotel -->
           <form action="/admin/hoteles/<%= h.id_hotel %>/delete" method="post" style="display:inline">
-            <button type="submit">Eliminar</button>
+            <button type="submit" class="btn eliminar">Eliminar</button>
           </form>
         </td>
       </tr>

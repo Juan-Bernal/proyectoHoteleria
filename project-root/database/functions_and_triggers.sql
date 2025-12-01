@@ -235,7 +235,7 @@ BEGIN
     WHERE id_huesped = NEW.id_huesped_responsable;
 
     -- Concatenar la fecha con los primeros 5 dígitos de la cédula
-    NEW.codigo_reserva := (fecha || cedula5)::BIGINT;
+    NEW.id_reserva := (fecha || cedula5)::BIGINT;
 
     -- Devolver el nuevo registro con el código de reserva generado
     RETURN NEW;

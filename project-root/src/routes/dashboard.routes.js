@@ -16,7 +16,7 @@ router.get('/habitacion/:id', controller.roomDetails)
 router.get('/reservar/:id', controller.bookingForm)
 
 // Procesar reserva (mostrar pago)
-router.post('/reservar', controller.processPayment)
+router.post('/reservar', controller.processBooking)
 
 
 // Procesar pago y confirmar

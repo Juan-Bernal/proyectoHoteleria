@@ -5,7 +5,8 @@ const hotelRepo = require('../../repository/hotel/hotel.repository')
 module.exports = {
   // Página principal de reportes
   index: (req, res) => res.render('layouts/admin', {
-    view: '../admin/reportes/index'
+    view: '../admin/reportes/index',
+    active: 'reportes'
   }),
 
   // Reporte 1: Reservas por período
@@ -17,7 +18,8 @@ module.exports = {
     res.render('layouts/admin', {
       view: '../admin/reportes/periodo',
       data,
-      filtros: { fecha_inicio, fecha_fin }
+      filtros: { fecha_inicio, fecha_fin },
+      active: 'reportes'
     })
   },
 
@@ -26,7 +28,8 @@ module.exports = {
     const data = await repo.canceladasSinAnticipo()
     res.render('layouts/admin', {
       view: '../admin/reportes/canceladasSinAnticipo',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -35,7 +38,8 @@ module.exports = {
     const data = await repo.noUsadasConAnticipo()
     res.render('layouts/admin', {
       view: '../admin/reportes/noUsadasConAnticipo',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -44,7 +48,8 @@ module.exports = {
     const data = await repo.llegadaATiempo()
     res.render('layouts/admin', {
       view: '../admin/reportes/llegadaATiempo',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -53,7 +58,8 @@ module.exports = {
     const data = await repo.menoresMascotas()
     res.render('layouts/admin', {
       view: '../admin/reportes/menoresMascotas',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -62,7 +68,8 @@ module.exports = {
     const data = await repo.conServicios()
     res.render('layouts/admin', {
       view: '../admin/reportes/conServicios',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -72,7 +79,8 @@ module.exports = {
     const data = await repo.obtenerEstadisticas()
     res.render('layouts/admin', {
       view: '../admin/reportes/estadisticas',
-      data
+      data,
+      active: 'reportes'
     })
   },
 
@@ -85,7 +93,8 @@ module.exports = {
       view: '../admin/reportes/historialCategorias',
       data,
       hoteles,
-      hotelSeleccionado: idHotel
+      hotelSeleccionado: idHotel,
+      active: 'reportes'
     })
   },
 
@@ -100,7 +109,8 @@ module.exports = {
       view: '../admin/reportes/ocupacion',
       data,
       hoteles,
-      filtros: { id_hotel, fecha_inicio, fecha_fin }
+      filtros: { id_hotel, fecha_inicio, fecha_fin },
+      active: 'reportes'
     })
   }
 }

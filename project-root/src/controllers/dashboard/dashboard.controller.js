@@ -78,6 +78,86 @@ module.exports = {
   },
 
 
+  // Procesar reserva y mostrar formulario de pago
+  processBooking: async (req, res) => {
+    try {
+      const {
+        id_habitacion,
+        id_hotel,
+        nombre,
+        cedula,
+        direccion,
+        telefono,
+        fecha_nacimiento,
+        fecha_inicio,
+        fecha_fin,
+        cantidad_personas,
+        incluye_mascotas,
+        servicios // Array de IDs de servicios
+      } = req.body
+
+      // Normalizar servicios a array (puede venir como string, array o undefined)
+      let serviciosArray = []
+      if (servicios) {
+        serviciosArray = Array.isArray(servicios) ? servicios : [servicios]
+      }
+
+      // Obtener detalles de habitación para calcular precio
+      const habitacion = await repo.findRoomById(id_habitacion)
+      
+      // Calcular días de estancia
+      const inicio = new Date(fecha_inicio)
+      const fin = new Date(fecha_fin)
+      const dias = Math.ceil((fin - inicio) / (1000 * 60 * 60 * 24))
+
+      // Calcular precio total
+      let precioTotal = habitacion.precio * dias
+
+      // Agregar servicios si los hay
+      if (serviciosArray.length > 0) {
+        const todosServicios = await repo.findAllServices()
+        serviciosArray.forEach(servicioId => {
+          const servicio = todosServicios.find(s => s.id_servicio == servicioId)
+          if (servicio) {
+            precioTotal += servicio.precio
+          }
+        })
+      }
+
+      // Calcular anticipo (20%)
+      const anticipo = precioTotal * 0.20
+
+      // Guardar datos en sesión para el pago
+      req.session.reservaTemp = {
+        id_habitacion,
+        id_hotel,
+        nombre,
+        cedula,
+        direccion,
+        telefono,
+        fecha_nacimiento,
+        fecha_inicio,
+        fecha_fin,
+        cantidad_personas,
+        incluye_mascotas: incluye_mascotas === 'on',
+        servicios: serviciosArray,
+        valor_total: precioTotal,
+        anticipo
+      }
+
+      res.render('layouts/public', {
+        view: '../dashboard/pago',
+        data: {
+          reserva: req.session.reservaTemp,
+          habitacion
+        }
+      })
+    } catch (error) {
+      console.error('Error al procesar reserva:', error)
+      res.status(500).send('Error al procesar reserva')
+    }
+  },
+
   // Confirmar pago y crear reserva
   processPayment: async (req, res) => {
     try {
